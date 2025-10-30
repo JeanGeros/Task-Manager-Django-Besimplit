@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Task Manager - Besimplit{% endblock %}</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+        }
+        .htmx-swapping {
+            animation: fadeOut 0.3s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    <nav class="shadow-lg">
+        <div class="max-w-4xl mx-auto px-4 py-6">
+            <div class="flex items-center gap-4">
+                <img src="https://besimplit.com/wp-content/uploads/2017/07/logo-bs-positivo.svg"
+                     alt="Besimplit Logo"
+                     class="h-10 w-auto">
+                <div class="flex-grow">
+                    <h1 class="text-2xl font-bold text-neutral-900">Task Manager</h1>
+                    <p class="text-sm text-neutral-700">Desafío Técnico Full Stack</p>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 py-8">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="mt-12 py-8 bg-white border-t border-gray-200">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <img src="https://besimplit.com/wp-content/uploads/2017/07/logo-bs-positivo.svg"
+                         alt="Besimplit"
+                         class="h-8 w-auto opacity-60">
+                    <div class="text-sm text-gray-600">
+                        <p class="font-medium">Desafío Técnico Besimplit</p>
+                        <p class="text-xs text-gray-500">Desarrollado por Jean - 2024</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 text-sm text-gray-500">
+                    <a href="/api/tasks/" class="hover:text-blue-600 transition">API REST</a>
+                    <a href="/admin/" class="hover:text-blue-600 transition">Admin</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
