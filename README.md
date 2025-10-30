@@ -13,15 +13,11 @@ Sistema de gestión de tareas desarrollado con Django, HTMX y Tailwind CSS que p
 - ✅ API REST para consultar y crear tareas
 - ✅ Interfaz moderna y responsive con Tailwind CSS
 - ✅ Interacciones dinámicas sin recarga usando HTMX
-- ✅ Modal para creación de tareas con HTMX (sin JS)
+- ✅ Modal para creación de tareas con HTMX 
 
 ### Bonus: Export de Reportes 📥
 - ✅ Exportación de reportes en **CSV** y **Excel (.xlsx)**
-- ✅ Dropdown elegante para seleccionar formato
-- ✅ Resumen ejecutivo con estadísticas
-- ✅ Detalle completo de todas las tareas
-- ✅ Excel con formato profesional (colores, negritas, anchos)
-- ✅ Nombre de archivo con timestamp
+- ✅ Mejoras en UI/UX
 
 ## Stack Tecnológico
 
@@ -30,7 +26,6 @@ Sistema de gestión de tareas desarrollado con Django, HTMX y Tailwind CSS que p
 - **Frontend**: HTMX 1.9.10 (CDN)
 - **Estilos**: Tailwind CSS 3.x (CDN)
 - **Base de datos**: SQLite
-- **Exportación**: openpyxl 3.1.2 (para Excel)
 
 ## Instalación y Configuración
 
@@ -189,31 +184,22 @@ besimplit/
 - Al crear tarea exitosamente, el formulario limpia el modal con `hx-on::after-request`
 - Todo sin una sola línea de JavaScript custom
 
-### 7. Exportación en CSV y Excel
+### 7. Exportación en CSV
 
-**Decisión**: Ofrecer ambos formatos CSV y Excel para exportar reportes.
+**Decisión**: Usar CSV en lugar de Excel o PDF para reportes.
 
 **Razón**:
-- **CSV**: Universal, ligero, sin dependencias pesadas
-- **Excel**: Profesional, con formato visual, ideal para presentaciones
-- Dropdown elegante sin JavaScript (solo CSS :hover)
-- Máxima flexibilidad para el usuario final
+- No requiere dependencias adicionales (usa librería csv nativa de Python)
+- Universal: se abre en Excel, Google Sheets, LibreOffice
+- Ligero y rápido de generar
+- Fácil de parsear programáticamente si se necesita
+- Cumple perfectamente con los requisitos del bonus
 
-**Implementación CSV**:
-- Usa librería csv nativa de Python
-- HttpResponse con content_type 'text/csv'
+**Implementación**:
+- Vista que genera HttpResponse con content_type CSV
+- Estructura clara: Resumen ejecutivo + Detalle de tareas
+- Timestamp en nombre de archivo para organización
 - Encoding UTF-8 para caracteres especiales
-
-**Implementación Excel**:
-- Librería openpyxl (ligera y completa)
-- Estilos profesionales: colores, negritas, alineación
-- Headers con fondo azul (#4472C4) y texto blanco
-- Columnas auto-dimensionadas (20px de ancho)
-- Celdas combinadas para títulos principales
-
-**Trade-off**:
-- Agregamos dependencia openpyxl (249KB)
-- Pero ganamos presentación profesional y mejor UX
 
 ## Endpoints de la API
 
@@ -280,31 +266,15 @@ Elimina una tarea
    - Animación suave de salida (1s)
 
 5. **Exportar Reporte**:
-   - Botón verde "Exportar" con dropdown
-   - Hover para ver opciones: CSV o Excel
-   - Descarga automática del formato seleccionado
+   - Botón verde "Exportar" en la parte superior
+   - Genera archivo CSV con timestamp
+   - Descarga automática
 
 ## Funcionalidad de Exportación de Reportes
 
-### Formatos Disponibles
+### Formato del Reporte CSV
 
-#### 1. CSV (Formato Universal)
-- Compatible con Excel, Google Sheets, LibreOffice
-- Ligero y rápido
-- Fácil de procesar programáticamente
-
-#### 2. Excel (.xlsx)
-- Archivo nativo de Microsoft Excel
-- **Formato profesional con estilos:**
-  - Headers con fondo azul y texto blanco
-  - Títulos en negrita
-  - Columnas con ancho automático
-  - Celdas combinadas para títulos
-  - Alineación centrada
-
-### Contenido del Reporte
-
-Ambos formatos incluyen:
+El reporte generado incluye:
 
 #### Resumen Ejecutivo:
 - Total de tareas creadas
@@ -323,13 +293,9 @@ Listado completo con:
 
 ### Uso:
 
-1. Hover sobre el botón **"Exportar"** (verde, esquina superior derecha)
-2. Selecciona el formato deseado:
-   - **Exportar CSV**: Formato universal
-   - **Exportar Excel**: Con formato y estilos
-3. El archivo se descarga automáticamente con nombre:
-   - CSV: `reporte_tareas_YYYYMMDD_HHMMSS.csv`
-   - Excel: `reporte_tareas_YYYYMMDD_HHMMSS.xlsx`
+1. Click en el botón **"Exportar"** (verde, esquina superior derecha)
+2. El archivo CSV se descarga automáticamente con nombre: `reporte_tareas_YYYYMMDD_HHMMSS.csv`
+3. Abrir con Excel, Google Sheets o cualquier editor de CSV
 
 ### Ejemplo de salida:
 
@@ -395,22 +361,9 @@ Con más tiempo, implementaría:
    - CI/CD pipeline
    - Variables de entorno para configuración
 
-## Tiempo de Desarrollo
-
-Tiempo estimado: ~2-3 horas
-
-Distribución:
-- Setup y configuración: 20 min
-- Modelos y API: 30 min
-- Vistas HTMX: 40 min
-- Templates y estilos: 60 min
-- Testing y ajustes: 20 min
-- Documentación: 20 min
-
 ## Contacto
 
 Desarrollado por Jean para Besimplit
-Email: bastian@besimplit.com
 
 ---
 
